@@ -1,13 +1,16 @@
 package cmd
 
 import (
+	"encoding/json"
 	"github.com/gin-contrib/cors"
+	ginI18n "github.com/gin-contrib/i18n"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"go-boss/internal/model"
 	"go-boss/pkg/cache"
 	"go-boss/pkg/database/mongo"
 	"go-boss/router"
+	"golang.org/x/text/language"
 	"log"
 	"time"
 )
@@ -32,7 +35,8 @@ func bootstrap() {
 }
 
 func engine() {
-
+	// 运行模式 debug
+	gin.SetMode(gin.DebugMode)
 	engine := gin.Default()
 	// 跨域处理
 	engine.Use(cors.New(cors.Config{
@@ -46,6 +50,15 @@ func engine() {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+
+	// 多语言
+	engine.Use(ginI18n.Localize(ginI18n.WithBundle(&ginI18n.BundleCfg{
+		RootPath:         "./localize",
+		AcceptLanguage:   []language.Tag{language.SimplifiedChinese, language.English},
+		DefaultLanguage:  language.SimplifiedChinese,
+		UnmarshalFunc:    json.Unmarshal,
+		FormatBundleFile: "json",
+	})))
 
 	// 初始化路由
 	router.InitApiRouter(engine)

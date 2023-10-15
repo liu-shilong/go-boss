@@ -11,11 +11,12 @@
 │   ├── rpc RPC接口
 │   │   ├── v1
 ├── cmd 命令行
+├── doc 文档
 ├── internal 业务逻辑
 │   ├── middleware 中间件
 │   ├── model 模型
 │   ├── service 服务
-├── lang 多语言
+├── localize 多语言
 ├── pkg 扩展包
 │   ├── auth 权限
 │   ├── captcha 验证码
