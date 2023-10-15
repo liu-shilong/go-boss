@@ -7,5 +7,9 @@ mysql:
   database: go_boss
   username: root
   password: root
+redis:
+  addr: localhost:6379
+  password: ""
+  db: 0
 
 

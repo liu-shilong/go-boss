@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-var Db = InitDB()
+var Db *gorm.DB
 
 type Model struct {
 	ID        uint           `gorm:"primary_key" json:"id"`
@@ -17,7 +17,11 @@ type Model struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
 
-func InitDB() *gorm.DB {
+func init() {
+	Db = Connect()
+}
+
+func Connect() *gorm.DB {
 	c := config.NewConfig()
 	viper := c.Viper
 	username := viper.Get("mysql.username") // 账号

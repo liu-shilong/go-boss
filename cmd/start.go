@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"go-boss/internal/model"
+	"go-boss/pkg/cache"
 	"go-boss/router"
 	"log"
 	"time"
@@ -26,7 +27,8 @@ func init() {
 // 启动
 func bootstrap() {
 	// 初始化数据库
-	model.InitDB()
+	model.Connect()
+	cache.InitRedis()
 	// 启动Gin引擎
 	engine()
 }
