@@ -2,8 +2,6 @@
 基于Gin开发的多应用后台管理系统
 
 ## 1.目录结构
-<details>
-<summary>展开查看</summary>
 <pre><code>
 ├── api API接口
 │   ├── http HTTP接口
@@ -54,7 +52,6 @@
 │   │   ├── sql 数据库日志
 └── test 测试
 </code></pre>
-</details>
 
 
 ## 2.启动

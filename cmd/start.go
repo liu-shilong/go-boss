@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gin-contrib/cors"
 	ginI18n "github.com/gin-contrib/i18n"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"go-boss/internal/model"
@@ -38,6 +39,10 @@ func engine() {
 	// 运行模式 debug
 	gin.SetMode(gin.DebugMode)
 	engine := gin.Default()
+
+	// 性能分析
+	pprof.Register(engine)
+
 	// 跨域处理
 	engine.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"https://foo.com"},
