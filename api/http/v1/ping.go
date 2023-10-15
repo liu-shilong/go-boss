@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-boss/pkg/cache"
 	"go-boss/pkg/database/mongo"
+	"go-boss/pkg/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
 	"net/http"
@@ -13,13 +14,21 @@ import (
 
 func Ping(c *gin.Context) {
 	//testRedis()
-	testMongo()
+	// testMongo()
+	testGeo()
+
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "pong",
 	})
 }
 
+func testGeo() {
+	geo := util.Ip2region("116.77.75.255")
+	log.Printf("geo: %v \n", geo) // geo: map[city:深圳市 country:中国 isp:天威 province:广东省]
+}
+
+// 测试mongodb
 func testMongo() {
 	ctx := Background()
 	client := mongo.MongoClient
@@ -35,6 +44,7 @@ func testMongo() {
 
 }
 
+// 测试redis
 func testRedis() {
 	ctx := Background()
 	client := cache.RedisCache

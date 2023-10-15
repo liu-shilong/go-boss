@@ -1,37 +1,34 @@
 package util
 
 import (
-	"github.com/oschwald/geoip2-golang"
-	"log"
-	"net"
+	"fmt"
+	"github.com/lionsoul2014/ip2region/binding/golang/xdb"
+	"strings"
 )
 
-func GetIpLocation(ip string) map[string]interface{} {
-	db, err := geoip2.Open("static/geo/GeoLite2-City.mmdb")
+func Ip2region(ip string) any {
+	var dbPath = "public/assets/geo/ip2region.xdb"
+	searcher, err := xdb.NewWithFileOnly(dbPath)
 	if err != nil {
-		log.Fatal(err)
-	}
-	defer func(db *geoip2.Reader) {
-		err := db.Close()
-		if err != nil {
-
-		}
-	}(db)
-
-	ipParse := net.ParseIP(ip)
-	record, err := db.City(ipParse)
-	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("failed to create searcher: %s\n", err.Error())
+		return nil
 	}
 
-	geoInfo := make(map[string]interface{})
-	geoInfo["continent"] = record.Continent.Names["zh-CN"]      // 洲名
-	geoInfo["country"] = record.Country.Names["zh-CN"]          // 国家
-	geoInfo["iso_code"] = record.Country.IsoCode                // 国家简码
-	geoInfo["time_zone"] = record.Location.TimeZone             // 时区
-	geoInfo["province"] = record.Subdivisions[0].Names["zh-CN"] // 州/省
-	geoInfo["city"] = record.City.Names["zh-CN"]                // 城市
-	geoInfo["longitude"] = record.Location.Longitude            // 经度
-	geoInfo["latitude"] = record.Location.Latitude              // 维度
-	return geoInfo
+	defer searcher.Close()
+
+	geo, err := searcher.SearchByStr(ip)
+	if err != nil {
+		fmt.Printf("failed to SearchIP(%s): %s\n", ip, err)
+		return nil
+	}
+
+	location := strings.Split(geo, "|")
+	info := map[string]string{
+		"country":  location[0],
+		"province": location[2],
+		"city":     location[3],
+		"isp":      location[4],
+	}
+
+	return info
 }
