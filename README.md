@@ -45,6 +45,8 @@
 │   ├── search-engine 搜索引擎
 │   ├── trace 追踪
 │   ├── util 通用
+├── public 公共资源
+│   ├── assets 资源
 ├── router 路由
 ├── runtime 运行时
 │   ├── logs 日志
