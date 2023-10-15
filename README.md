@@ -20,6 +20,10 @@
 │   ├── auth 权限
 │   ├── captcha 验证码
 │   ├── crypt 加密
+│   ├── database 数据库处理
+│   │   ├── etcd
+│   │   ├── etcd
+│   │   ├── mongo
 │   ├── datetime 日期处理
 │   ├── file 文件
 │   ├── http 请求响应
@@ -41,6 +45,7 @@
 │   ├── qrcode 二维码
 │   ├── search-engine 搜索引擎
 │   ├── trace 追踪
+│   ├── util 通用
 ├── router 路由
 ├── runtime 运行时
 │   ├── logs 日志

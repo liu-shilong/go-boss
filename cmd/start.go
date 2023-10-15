@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"go-boss/internal/model"
 	"go-boss/pkg/cache"
+	"go-boss/pkg/database/mongo"
 	"go-boss/router"
 	"log"
 	"time"
@@ -20,15 +21,12 @@ var startCmd = &cobra.Command{
 	},
 }
 
-func init() {
-
-}
-
 // 启动
 func bootstrap() {
 	// 初始化数据库
 	model.Connect()
 	cache.InitRedis()
+	mongo.InitMongo()
 	// 启动Gin引擎
 	engine()
 }
