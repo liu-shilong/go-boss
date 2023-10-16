@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-boss/pkg/cache"
 	"go-boss/pkg/database/mongo"
+	"go-boss/pkg/file/excel"
 	"go-boss/pkg/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
@@ -15,8 +16,8 @@ import (
 func Ping(c *gin.Context) {
 	//testRedis()
 	// testMongo()
-	testGeo()
-
+	// testGeo()
+	excel.Create()
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "pong",

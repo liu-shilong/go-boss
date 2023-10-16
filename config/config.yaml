@@ -1,15 +1,25 @@
+# 应用配置
 app:
   env: dev
   app_name: go-boss
+# mysql 配置
 mysql:
   host: 127.0.0.1
   port: 3306
   database: go_boss
   username: root
   password: root
+# redis配置
 redis:
   addr: localhost:6379
   password: ""
   db: 0
-
+# 文件配置
+file:
+  image:
+    upload:
+  excel:
+    import: public/excel/import
+    export: public/excel/export
+  oss:
 
