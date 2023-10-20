@@ -14,6 +14,7 @@ func InitApiRouter(engine *gin.Engine) {
 	engine.GET("/ping", v1.Ping)
 	// 多语言测试
 	engine.GET("/", func(ctx *gin.Context) {
+		ctx.Writer.Header().Add("X-Request-Id", "1234-5678-9012")
 		ctx.String(http.StatusOK, ginI18n.MustGetMessage(ctx, "welcome"))
 	})
 

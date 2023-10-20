@@ -1,17 +1,22 @@
 package cmd
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/gin-contrib/cors"
 	ginI18n "github.com/gin-contrib/i18n"
-	"github.com/gin-contrib/pprof"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"go-boss/internal/model"
 	"go-boss/pkg/cache"
 	"go-boss/pkg/database/mongo"
 	"go-boss/router"
+	"go.opentelemetry.io/otel/trace"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	"golang.org/x/text/language"
+	"io"
 	"log"
 	"time"
 )
@@ -40,8 +45,38 @@ func engine() {
 	gin.SetMode(gin.DebugMode)
 	engine := gin.Default()
 
+	// 日志
+	logger, _ := zap.NewProduction()
+	engine.Use(ginzap.GinzapWithConfig(logger, &ginzap.Config{
+		UTC:        true,
+		TimeFormat: time.RFC3339,
+		Context: ginzap.Fn(func(c *gin.Context) []zapcore.Field {
+			fields := []zapcore.Field{}
+			// log request ID
+			if requestID := c.Writer.Header().Get("X-Request-Id"); requestID != "" {
+				fields = append(fields, zap.String("request_id", requestID))
+			}
+
+			// log trace and span ID
+			if trace.SpanFromContext(c.Request.Context()).SpanContext().IsValid() {
+				fields = append(fields, zap.String("trace_id", trace.SpanFromContext(c.Request.Context()).SpanContext().TraceID().String()))
+				fields = append(fields, zap.String("span_id", trace.SpanFromContext(c.Request.Context()).SpanContext().SpanID().String()))
+			}
+
+			// log request body
+			var body []byte
+			var buf bytes.Buffer
+			tee := io.TeeReader(c.Request.Body, &buf)
+			body, _ = io.ReadAll(tee)
+			c.Request.Body = io.NopCloser(&buf)
+			fields = append(fields, zap.String("body", string(body)))
+
+			return fields
+		}),
+	}))
+
 	// 性能分析
-	pprof.Register(engine)
+	// pprof.Register(engine)
 
 	// 跨域处理
 	engine.Use(cors.New(cors.Config{

@@ -33,7 +33,6 @@
 │   ├── http 请求响应
 │   │   ├── request  请求
 │   │   ├── response 响应
-│   ├── logger 日志
 │   ├── mq 消息队列
 │   ├── platform 第三方平台
 │   │   ├── alibaba 阿里巴巴
@@ -48,7 +47,6 @@
 │   │   │   ├── wework 企业微信
 │   ├── qrcode 二维码
 │   ├── search-engine 搜索引擎
-│   ├── trace 追踪
 │   ├── util  通用
 ├── public 公共资源
 │   ├── assets 资源

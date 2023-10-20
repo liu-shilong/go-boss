@@ -5,6 +5,10 @@ import (
 	"go-boss/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
+	"log"
+	"os"
 	"time"
 )
 
@@ -31,7 +35,7 @@ func Connect() *gorm.DB {
 	database := viper.Get("mysql.database") // 数据库名称
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", username, password, host, port, database)
-
+	logfile, _ := os.Create("runtime/logs/sql/sql.log")
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,   // DSN
 		DefaultStringSize:         256,   // string 类型字段的默认长度
@@ -40,7 +44,17 @@ func Connect() *gorm.DB {
 		DontSupportRenameColumn:   true,  // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
 		SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
 
-	}), &gorm.Config{})
+	}), &gorm.Config{
+		Logger: logger.New(log.New(logfile, "\r\n", log.LstdFlags),
+			logger.Config{
+				SlowThreshold: time.Second,
+				LogLevel:      logger.Info,
+				Colorful:      true,
+			}),
+		NamingStrategy: schema.NamingStrategy{
+			SingularTable: true,
+		},
+	})
 
 	if err != nil {
 		panic("failed to connect mysql.")
