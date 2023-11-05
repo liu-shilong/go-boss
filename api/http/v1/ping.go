@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-boss/pkg/cache"
 	"go-boss/pkg/database/mongo"
-	"go-boss/pkg/file/excel"
 	"go-boss/pkg/mailer"
 	"go-boss/pkg/util"
 	"go.mongodb.org/mongo-driver/bson"
@@ -18,8 +17,9 @@ func Ping(c *gin.Context) {
 	//testRedis()
 	// testMongo()
 	// testGeo()
-	excel.Create()
-	testEmail()
+	// excel.Create()
+	// testEmail()
+	testUuid()
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "pong",
@@ -74,4 +74,9 @@ func testEmail() {
 	if err != nil {
 		println(err.Error())
 	}
+}
+
+func testUuid() {
+	fmt.Println(util.StringUuid())
+	fmt.Println(util.IntUuid())
 }
