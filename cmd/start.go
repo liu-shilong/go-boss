@@ -10,7 +10,6 @@ import (
 	"github.com/spf13/cobra"
 	"go-boss/internal/model"
 	"go-boss/pkg/cache"
-	"go-boss/pkg/database/mongo"
 	"go-boss/router"
 	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
@@ -35,7 +34,7 @@ func bootstrap() {
 	// 初始化数据库
 	model.Connect()
 	cache.InitRedis()
-	mongo.InitMongo()
+	// mongo.InitMongo()
 	// 启动Gin引擎
 	engine()
 }

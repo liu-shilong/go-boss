@@ -7,6 +7,7 @@ import (
 	"go-boss/pkg/cache"
 	"go-boss/pkg/database/mongo"
 	"go-boss/pkg/file/excel"
+	"go-boss/pkg/mailer"
 	"go-boss/pkg/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
@@ -18,6 +19,7 @@ func Ping(c *gin.Context) {
 	// testMongo()
 	// testGeo()
 	excel.Create()
+	testEmail()
 	c.JSON(http.StatusOK, gin.H{
 		"code": http.StatusOK,
 		"msg":  "pong",
@@ -61,4 +63,15 @@ func testRedis() {
 		return
 	}
 	fmt.Println(val)
+}
+
+func testEmail() {
+	to := "1932255901@qq.com"
+	subject := "test gmail"
+	body := `<p style="color:red;">This is a email with gmail!</p>`
+	// 发送邮件
+	err := mailer.SendText(to, subject, body)
+	if err != nil {
+		println(err.Error())
+	}
 }

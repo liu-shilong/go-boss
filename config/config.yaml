@@ -22,4 +22,9 @@ file:
     import: public/excel/import
     export: public/excel/export
   oss:
+email:
+  host: smtp.qq.com
+  port: 465
+  username: 123456789@qq.com
+  password: hnqhwtozkzkibeae
 
