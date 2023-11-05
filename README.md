@@ -33,7 +33,8 @@
 │   ├── http 请求响应
 │   │   ├── request  请求
 │   │   ├── response 响应
-│   ├── mq 消息队列
+│   ├── mq     消息队列
+│   ├── mailer 邮件发送
 │   ├── platform 第三方平台
 │   │   ├── alibaba 阿里巴巴
 │   │   │   ├── alipay   支付宝
